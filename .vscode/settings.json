@@ -1,5 +1,8 @@
 {
     "files.associations": {
-        "send.h": "c"
+        "send.h": "c",
+        "utils.h": "c",
+        "socket.h": "c",
+        "recv.h": "c"
     }
 }

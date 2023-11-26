@@ -1,2 +1,2 @@
 curl: 
-	gcc curl.c send.c recv.c -o main/curl
+	gcc client.c send.c recv.c utils/utils.c -o main/client

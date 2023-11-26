@@ -14,6 +14,7 @@ void close_and_exit(int sckt, char *message) {
     exit(-1);
 }
 
+// Send through socket sckt the first n bytes of buffer to host_addr 
 void send_by_socket(int sckt, int n, char *buffer, struct hostent *host_addr) {
     
     
