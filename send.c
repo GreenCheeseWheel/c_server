@@ -28,7 +28,6 @@ void send_by_socket(int sckt, int n, char *buffer, struct hostent *host_addr) {
     server_addr.sin_family = AF_INET;
     memcpy(&server_addr.sin_addr.s_addr, host_addr->h_addr_list[0], host_addr->h_length);
 
-    printf("%s", *host_addr->h_addr_list );
     int connection_status = connect(sckt, (struct sockaddr*)&server_addr, sizeof(server_addr));
     
     if(connection_status == -1) {

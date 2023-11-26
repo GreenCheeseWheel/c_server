@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <sys/socket.h>
 #include <netdb.h>
+#include "sockets/recv.h"
 #include "sockets/send.h"
 
 #define BUFFER_SIZE 500
@@ -11,19 +12,24 @@
 
 int main(int argc, char *argv[])
 {
-    FILE *file = fopen("./google.html", "r");
-    FILE *doc = fopen("./doc.html", "a");
-    char buffer[BUFFER_SIZE] = "GET /users HTTP/1.0\r\nContent-Type: text/plain\r\n\r\n";       
-    struct hostent *host = gethostbyname("si-voy-mock.onrender.com");
-    int sckt = socket(AF_INET, SOCK_STREAM, 0);
-    char buffer_recv[BUFFER_SIZE];
-    
-    send_by_socket(sckt, BUFFER_SIZE, buffer, host);
-    recv(sckt, buffer_recv, BUFFER_SIZE, 0);    
-    
-    close(sckt);
-    fclose(file);
-    fclose(doc);
+    struct sockaddr_in localhost =  {
+        .sin_port = htons(3500),
+        .sin_family = AF_INET,
+    };
 
+    localhost.sin_addr.s_addr = INADDR_ANY;
+
+    int sckt = socket(AF_INET, SOCK_STREAM, 0);
+
+    bind(sckt, (struct sockaddr*)&localhost, sizeof(localhost));
+    listen(sckt, 1);
+    int client_sckt = accept(sckt, NULL, NULL);
+
+    char buffer_recv[BUFFER_SIZE]; 
+    recv_with_socket(client_sckt, buffer_recv, NULL);
+    
+    close(client_sckt);
+    close(sckt);
+    
     return 0;
 }
